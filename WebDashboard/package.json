@@ -1,0 +1,28 @@
+{
+  "name": "dayz-leaderboard-web",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "prisma generate && next build",
+    "start": "next start",
+    "lint": "next lint",
+    "prisma:generate": "prisma generate",
+    "prisma:migrate": "prisma db push"
+  },
+  "dependencies": {
+    "@prisma/client": "^5.12.1",
+    "lucide-react": "^0.363.0",
+    "next": "^14.1.4",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "recharts": "^2.12.3"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.30",
+    "@types/react": "^18.2.73",
+    "@types/react-dom": "^18.2.22",
+    "prisma": "^5.12.1",
+    "typescript": "^5.4.3"
+  }
+}

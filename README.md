@@ -1,0 +1,97 @@
+# DayZ Leaderboard & Real-Time Statistics System
+
+[![Next.js](https://img.shields.io/badge/next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white)](https://nextjs.org/)
+[![Prisma](https://img.shields.io/badge/Prisma-3982CE?style=for-the-badge&logo=Prisma&logoColor=white)](https://prisma.io/)
+[![MySQL](https://img.shields.io/badge/mysql-%2300f.svg?style=for-the-badge&logo=mysql&logoColor=white)](https://www.mysql.com/)
+[![DayZ](https://img.shields.io/badge/DayZ-Mod-red?style=for-the-badge)](https://dayz.com/)
+
+A premium, open-source, real-time statistics tracker and web leaderboard dashboard for **DayZ Standalone** servers. This project combines a high-performance **Next.js 14** web application and a compile-safe **DayZ server-side mod** to deliver real-time rankings, pvp metrics, bank wealth, and activity logs.
+
+Designed for server owners who want to boost player engagement, this system tracks everything from long-distance sniper shots to loot container raids without causing server lag or crashes.
+
+---
+
+## 🌟 Key Features
+
+*   **🏆 Complete Leaderboard:** Rank players dynamically by Playtime, Bank Wealth, PvP K/D Ratio, Infected Kills, AI Kills, DNA Keycard Openings, Longest Kill, and Longest Hit.
+*   **📡 Live Event Feed:** An instant, real-time activity wall logging PvP deaths (including weapon and distance), PvE hunts, and safehouse raids.
+*   **🤖 Expansion AI Integration:** Tracks AI kills (from DayZ Expansion AI) as separate stats to avoid skewing PvP stats.
+*   **💰 Expansion Bank Integration:** Real-time bank balance synchronization for wealth-based leaderboard rankings.
+*   **🔑 DNA Keycards Integration:** Automatically logs safehouse keypad unlocks and loot crate openings.
+*   **🔒 Privacy-Focused PvP Settings:** Hide player last known positions and raid coordinates directly from the dashboard configurations to prevent stream-sniping and base-camping.
+*   **⚙️ Zero-Database configuration**: Customize which columns to display or track through a single `settings.json` file.
+*   **🛡️ Crash-Resistant Mod Scripts:** Engine-level null-pointer safeguards (e.g., AI deaths, entity hit logic) and query-parameter fallbacks to bypass DayZ's custom HTTP header limitations.
+
+---
+
+## 📁 Repository Structure
+
+*   `WebDashboard/`: Next.js web application codebase.
+*   `ServerMod/`: DayZ server-side script mod source files.
+
+---
+
+## 🚀 Web Dashboard Setup (Next.js & Vercel)
+
+### 1. Database Initialization
+Ensure you have a **MySQL** database running. 
+If you are using shared web hosting, you can initialize the required tables by running the provided helper script `db_setup.php` on your host, or execute the raw DDL queries.
+
+The database contains the following tables:
+*   `Player`: Stores persistent player stats (playtime, bank wealth, records).
+*   `Kill`: Logs PvP kills, suicides, and AI kills.
+*   `PveKill`: Logs infected, animal, and AI kills by players.
+*   `HitLog`: Tracks player bullet hits for longest hit calculations.
+*   `DnaLog`: Logs DNA Keycard crate and safehouse locks.
+
+### 2. Environment Variables
+Create a `.env` file in the `WebDashboard/` directory based on the `.env.example` file:
+```ini
+DATABASE_URL="mysql://username:password@host:port/database"
+API_KEY="your_secret_api_key_here"
+```
+
+### 3. Deploying to Vercel
+1.  Push the `WebDashboard/` code to a private or public GitHub repository.
+2.  Import the repository into **Vercel**.
+3.  Add `DATABASE_URL` and `API_KEY` as environment variables in the Vercel Dashboard.
+4.  Deploy! The build will automatically compile and optimize the routes.
+
+### 4. Customizing Features (`settings.json`)
+You can easily toggle which statistics are shown on the leaderboard and profile pages by editing `WebDashboard/src/config/settings.json`:
+*   Set any feature to `false` (e.g., `bank` or `dna`) to hide its columns and sorting buttons.
+*   Disable position tracking under the `privacy` section to hide coordinates on player profiles.
+
+---
+
+## 🎮 DayZ Server Mod Setup
+
+### 1. Compile the Mod
+1.  Open the **DayZ Addon Builder**.
+2.  Select the `ServerMod/` folder as the source directory.
+3.  Compile it into a `.pbo` file and place it in a mod folder (e.g., `@DayZLeaderboard/Addons/DayZLeaderboard.pbo`).
+4.  Add the mod to your server's startup parameters (`-serverMod=@DayZLeaderboard`).
+
+### 2. Configuration
+Upon the first server startup, the mod will generate a default configuration file in your server profiles folder under `profiles/DayZLeaderboard/config.json`.
+
+Update it with your web URL and Vercel API Key:
+```json
+{
+  "api_url": "https://your-project.vercel.app/api/v1",
+  "api_key": "your_secret_api_key_here",
+  "track_dna": 1,
+  "track_expansion_ai": 1,
+  "track_expansion_bank": 1,
+  "sync_interval_minutes": 5
+}
+```
+*Restart the DayZ server after saving the configuration.*
+
+---
+
+## ⚖️ Legal Disclaimer
+
+This website and mod are community-developed projects. They are **not** affiliated with, authorized, sponsored, or endorsed by Bohemia Interactive a.s. 
+
+DayZ, Bohemia Interactive, and their respective logos are trademarks or registered trademarks of Bohemia Interactive a.s.

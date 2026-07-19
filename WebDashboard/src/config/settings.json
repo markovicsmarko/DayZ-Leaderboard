@@ -1,0 +1,44 @@
+{
+  "features": {
+    "playtime": {
+      "enabled": true,
+      "label": "Playtime"
+    },
+    "bank": {
+      "enabled": true,
+      "label": "Bank Balance"
+    },
+    "pvp": {
+      "enabled": true,
+      "label": "PvP Stats"
+    },
+    "zombie": {
+      "enabled": true,
+      "label": "Zombie Kills"
+    },
+    "ai": {
+      "enabled": true,
+      "label": "AI Kills"
+    },
+    "dna": {
+      "enabled": true,
+      "label": "DNA Openings"
+    },
+    "longest_kill": {
+      "enabled": true,
+      "label": "Longest Kill"
+    },
+    "longest_hit": {
+      "enabled": true,
+      "label": "Longest Hit"
+    },
+    "live_feed": {
+      "enabled": true,
+      "label": "Live Event Feed"
+    }
+  },
+  "privacy": {
+    "show_last_position": false,
+    "show_event_positions": false
+  }
+}

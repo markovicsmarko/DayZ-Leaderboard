@@ -1,0 +1,81 @@
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Player {
+  steamId       String    @id
+  bohemiaId     String    @unique
+  playerName    String
+  playTime      Int       @default(0) // playTime in seconds
+  bankBalance   Int       @default(0)
+  longestHit    Float     @default(0.0) // in meters
+  longestKill   Float     @default(0.0) // in meters
+  lastPosition  String    @default("0 0 0")
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  // Relations
+  killsAsKiller Kill[]    @relation("KillerRelation")
+  killsAsVictim Kill[]    @relation("VictimRelation")
+  pveKills      PveKill[]
+  dnaLogs       DnaLog[]
+  hitLogs       HitLog[]
+}
+
+model Kill {
+  id              Int      @id @default(autoincrement())
+  killerId        String?
+  killer          Player?  @relation("KillerRelation", fields: [killerId], references: [steamId])
+  killerBohemiaId String?
+  killerName      String?
+  victimId        String
+  victim          Player   @relation("VictimRelation", fields: [victimId], references: [steamId])
+  victimBohemiaId String
+  victimName      String
+  weapon          String
+  distance        Float
+  isSuicide       Boolean  @default(false)
+  isAi            Boolean  @default(false)
+  timestamp       DateTime @default(now())
+}
+
+model PveKill {
+  id              Int      @id @default(autoincrement())
+  killerId        String
+  killer          Player   @relation(fields: [killerId], references: [steamId])
+  killerBohemiaId String
+  killerName      String
+  targetType      String   // "zombie", "animal", or "ai"
+  className       String   // e.g. "Animal_UrsusArctos", "ZombieBase"
+  timestamp       DateTime @default(now())
+}
+
+model HitLog {
+  id              Int      @id @default(autoincrement())
+  attackerId      String
+  attacker        Player   @relation(fields: [attackerId], references: [steamId])
+  attackerBohemiaId String
+  attackerName    String
+  victimId        String
+  victimBohemiaId String
+  victimName      String
+  distance        Float
+  timestamp       DateTime @default(now())
+}
+
+model DnaLog {
+  id              Int      @id @default(autoincrement())
+  playerId        String
+  player          Player   @relation(fields: [playerId], references: [steamId])
+  playerBohemiaId String
+  playerName      String
+  action          String   // Action class name
+  targetClass     String   // Target entity class name
+  position        String   // Coordinate "X Y Z"
+  timestamp       DateTime @default(now())
+}
