@@ -1,11 +1,11 @@
 # DayZ Leaderboard & Real-Time Statistics System
 
-[![Next.js](https://img.shields.io/badge/next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white)](https://nextjs.org/)
-[![Prisma](https://img.shields.io/badge/Prisma-3982CE?style=for-the-badge&logo=Prisma&logoColor=white)](https://prisma.io/)
-[![MySQL](https://img.shields.io/badge/mysql-%2300f.svg?style=for-the-badge&logo=mysql&logoColor=white)](https://www.mysql.com/)
-[![DayZ](https://img.shields.io/badge/DayZ-Mod-red?style=for-the-badge)](https://dayz.com/)
+[![Next.js](https://img.shields.io/badge/Next.js-14-black?style=for-the-badge&logo=next.js&logoColor=white)](https://nextjs.org/)
+[![Prisma](https://img.shields.io/badge/Prisma-ORM-indigo?style=for-the-badge&logo=prisma&logoColor=white)](https://prisma.io/)
+[![MySQL](https://img.shields.io/badge/MySQL-Database-blue?style=for-the-badge&logo=mysql&logoColor=white)](https://www.mysql.com/)
+[![DayZ Mod](https://img.shields.io/badge/DayZ-Server_Mod-orange?style=for-the-badge)](https://dayz.com/)
 
-A premium, open-source, real-time statistics tracker and web leaderboard dashboard for **DayZ Standalone** servers. This project combines a high-performance **Next.js 14** web application and a compile-safe **DayZ server-side mod** to deliver real-time rankings, pvp metrics, bank wealth, and activity logs.
+A premium, open-source, real-time player statistics tracker and web leaderboard dashboard for **DayZ Standalone** servers. This project combines a high-performance **Next.js 14** web application and a compile-safe **DayZ server-side mod** to deliver real-time rankings, PvP metrics, bank wealth, and activity logs.
 
 Designed for server owners who want to boost player engagement, this system tracks everything from long-distance sniper shots to loot container raids without causing server lag or crashes.
 
@@ -31,11 +31,15 @@ Designed for server owners who want to boost player engagement, this system trac
 
 ---
 
-## 🚀 Web Dashboard Setup (Next.js & Vercel)
+## 🚀 Web Dashboard Setup (Next.js)
 
 ### 1. Database Initialization
 Ensure you have a **MySQL** database running. 
-If you are using shared web hosting, you can initialize the required tables by running the provided helper script `db_setup.php` on your host, or execute the raw DDL queries.
+You can initialize the required tables by running the Prisma push command:
+```bash
+npx prisma db push
+```
+*(Or if you are on shared web hosting, you can run the provided helper script `db_setup.php` on your host to execute the raw DDL queries).*
 
 The database contains the following tables:
 *   `Player`: Stores persistent player stats (playtime, bank wealth, records).
@@ -44,20 +48,39 @@ The database contains the following tables:
 *   `HitLog`: Tracks player bullet hits for longest hit calculations.
 *   `DnaLog`: Logs DNA Keycard crate and safehouse locks.
 
-### 2. Environment Variables
+### 2. Configuration & Environment Variables
 Create a `.env` file in the `WebDashboard/` directory based on the `.env.example` file:
 ```ini
 DATABASE_URL="mysql://username:password@host:port/database"
 API_KEY="your_secret_api_key_here"
 ```
 
-### 3. Deploying to Vercel
+### 3. Self-Hosting / Running Locally (Node.js)
+1.  Navigate to the `WebDashboard` directory:
+    ```bash
+    cd WebDashboard
+    ```
+2.  Install dependencies:
+    ```bash
+    npm install
+    ```
+3.  Build the production application:
+    ```bash
+    npm run build
+    ```
+4.  Start the production server:
+    ```bash
+    npm run start
+    ```
+    *(We recommend using `pm2` to keep the application running in the background).*
+
+### 4. Alternative Hosting Option: Vercel
 1.  Push the `WebDashboard/` code to a private or public GitHub repository.
 2.  Import the repository into **Vercel**.
-3.  Add `DATABASE_URL` and `API_KEY` as environment variables in the Vercel Dashboard.
+3.  Add `DATABASE_URL` and `API_KEY` as environment variables in the Vercel Dashboard settings.
 4.  Deploy! The build will automatically compile and optimize the routes.
 
-### 4. Customizing Features (`settings.json`)
+### 5. Customizing Features (`settings.json`)
 You can easily toggle which statistics are shown on the leaderboard and profile pages by editing `WebDashboard/src/config/settings.json`:
 *   Set any feature to `false` (e.g., `bank` or `dna`) to hide its columns and sorting buttons.
 *   Disable position tracking under the `privacy` section to hide coordinates on player profiles.
@@ -75,10 +98,10 @@ You can easily toggle which statistics are shown on the leaderboard and profile 
 ### 2. Configuration
 Upon the first server startup, the mod will generate a default configuration file in your server profiles folder under `profiles/DayZLeaderboard/config.json`.
 
-Update it with your web URL and Vercel API Key:
+Update it with your web URL and API Key:
 ```json
 {
-  "api_url": "https://your-project.vercel.app/api/v1",
+  "api_url": "https://your-project-domain.com/api/v1",
   "api_key": "your_secret_api_key_here",
   "track_dna": 1,
   "track_expansion_ai": 1,
