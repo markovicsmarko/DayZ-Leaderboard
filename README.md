@@ -1,9 +1,7 @@
 # DayZ Leaderboard & Real-Time Statistics System
 
 [![Next.js](https://img.shields.io/badge/Next.js-14-black?style=for-the-badge&logo=nextdotjs&logoColor=white)](https://nextjs.org/)
-[![Prisma](https://img.shields.io/badge/Prisma-ORM-blueviolet?style=for-the-badge)](https://prisma.io/)
 [![MySQL](https://img.shields.io/badge/MySQL-Database-blue?style=for-the-badge&logo=mysql&logoColor=white)](https://www.mysql.com/)
-[![DayZ Mod](https://img.shields.io/badge/DayZ-Mod-orange?style=for-the-badge)](https://dayz.com/)
 
 A premium, open-source, real-time player statistics tracker and web leaderboard dashboard for **DayZ Standalone** servers. This project combines a high-performance **Next.js 14** web application and a compile-safe **DayZ server-side mod** to deliver real-time rankings, PvP metrics, bank wealth, and activity logs.
 
