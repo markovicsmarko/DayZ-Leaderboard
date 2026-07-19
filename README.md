@@ -1,9 +1,9 @@
 # DayZ Leaderboard & Real-Time Statistics System
 
-[![Next.js](https://img.shields.io/badge/Next.js-14-black?style=for-the-badge&logo=next.js&logoColor=white)](https://nextjs.org/)
-[![Prisma](https://img.shields.io/badge/Prisma-ORM-indigo?style=for-the-badge&logo=prisma&logoColor=white)](https://prisma.io/)
+[![Next.js](https://img.shields.io/badge/Next.js-14-black?style=for-the-badge&logo=nextdotjs&logoColor=white)](https://nextjs.org/)
+[![Prisma](https://img.shields.io/badge/Prisma-ORM-blueviolet?style=for-the-badge)](https://prisma.io/)
 [![MySQL](https://img.shields.io/badge/MySQL-Database-blue?style=for-the-badge&logo=mysql&logoColor=white)](https://www.mysql.com/)
-[![DayZ Mod](https://img.shields.io/badge/DayZ-Server_Mod-orange?style=for-the-badge)](https://dayz.com/)
+[![DayZ Mod](https://img.shields.io/badge/DayZ-Mod-orange?style=for-the-badge)](https://dayz.com/)
 
 A premium, open-source, real-time player statistics tracker and web leaderboard dashboard for **DayZ Standalone** servers. This project combines a high-performance **Next.js 14** web application and a compile-safe **DayZ server-side mod** to deliver real-time rankings, PvP metrics, bank wealth, and activity logs.
 
@@ -72,7 +72,7 @@ API_KEY="your_secret_api_key_here"
     ```bash
     npm run start
     ```
-    *(We recommend using `pm2` to keep the application running in the background).*
+    *(I recommend using `pm2` to keep the application running in the background).*
 
 ### 4. Alternative Hosting Option: Vercel
 1.  Push the `WebDashboard/` code to a private or public GitHub repository.
