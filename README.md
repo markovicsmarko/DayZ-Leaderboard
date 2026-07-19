@@ -2,6 +2,7 @@
 
 [![Next.js](https://img.shields.io/badge/Next.js-14-black?style=for-the-badge&logo=nextdotjs&logoColor=white)](https://nextjs.org/)
 [![MySQL](https://img.shields.io/badge/MySQL-Database-blue?style=for-the-badge&logo=mysql&logoColor=white)](https://www.mysql.com/)
+[![Steam Workshop](https://img.shields.io/badge/Steam_Workshop-Subscribe-blue?style=for-the-badge&logo=steam&logoColor=white)](https://steamcommunity.com/sharedfiles/filedetails/?id=3767782283)
 
 A premium, open-source, real-time player statistics tracker and web leaderboard dashboard for **DayZ Standalone** servers. This project combines a high-performance **Next.js 14** web application and a compile-safe **DayZ server-side mod** to deliver real-time rankings, PvP metrics, bank wealth, and activity logs.
 
@@ -87,11 +88,19 @@ You can easily toggle which statistics are shown on the leaderboard and profile 
 
 ## 🎮 DayZ Server Mod Setup
 
-### 1. Compile the Mod
-1.  Open the **DayZ Addon Builder**.
-2.  Select the `ServerMod/` folder as the source directory.
-3.  Compile it into a `.pbo` file and place it in a mod folder (e.g., `@DayZLeaderboard/Addons/DayZLeaderboard.pbo`).
-4.  Add the mod to your server's startup parameters (`-serverMod=@DayZLeaderboard`).
+### 1. Install the Server Mod
+You have two options to install the server-side mod:
+
+#### Option A: Subscribe on Steam Workshop (Recommended)
+1. Subscribe to the compiled server mod directly on the [Steam Workshop](https://steamcommunity.com/sharedfiles/filedetails/?id=3767782283).
+2. Copy the `@DayZ Leaderboard - Real-Time Stats` folder from your local Steam workshop directory to your server's root folder.
+3. Add the mod to your server's startup parameters: `-serverMod=@DayZ Leaderboard - Real-Time Stats`.
+
+#### Option B: Compile from Source (Advanced)
+1. Open the **DayZ Addon Builder**.
+2. Select the `ServerMod/` folder as the source directory.
+3. Compile it into a `.pbo` file and place it in a custom mod folder on your server (e.g., `@DayZLeaderboard/Addons/DayZLeaderboard.pbo`).
+4. Add the mod to your server's startup parameters: `-serverMod=@DayZLeaderboard`.
 
 ### 2. Configuration
 Upon the first server startup, the mod will generate a default configuration file in your server profiles folder under `profiles/DayZLeaderboard/config.json`.
