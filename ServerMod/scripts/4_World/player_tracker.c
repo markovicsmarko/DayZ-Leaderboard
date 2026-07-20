@@ -3,12 +3,17 @@ modded class PlayerBase
 {
     float m_SessionLongestHit = 0.0;
     int m_SessionJoinTime = 0; // Epoch timestamp of player connection
+    int m_SessionZombieKills = 0; // In-memory session accumulator
+    int m_SessionAnimalKills = 0; // In-memory session accumulator
 
     override void EEHitBy(TotalDamageResult damageResult, int damageType, EntityAI source, int component, string dmgZone, string ammo, vector modelPos, float speedCoef)
     {
         super.EEHitBy(damageResult, damageType, source, component, dmgZone, ammo, modelPos, speedCoef);
 
         if (!GetGame().IsServer())
+            return;
+
+        if (DayZLeaderboardAPI.m_Config && !DayZLeaderboardAPI.m_Config.track_hits)
             return;
 
         if (source)
@@ -149,7 +154,7 @@ modded class PlayerBase
     }
 }
 
-// Modded ZombieBase to track zombie kills by players
+// Modded ZombieBase to track zombie kills by players (accumulated in-memory)
 modded class ZombieBase
 {
     override void EEKilled(Object killer)
@@ -159,30 +164,22 @@ modded class ZombieBase
         if (!GetGame().IsServer())
             return;
 
+        if (DayZLeaderboardAPI.m_Config && !DayZLeaderboardAPI.m_Config.track_zombies)
+            return;
+
         EntityAI killerEntity = EntityAI.Cast(killer);
         if (killerEntity)
         {
             PlayerBase killerPlayer = PlayerBase.Cast(killerEntity.GetHierarchyRootPlayer());
             if (killerPlayer && killerPlayer.GetIdentity())
             {
-                string killerSteamId = killerPlayer.GetIdentity().GetPlainId();
-                string killerBohemiaId = killerPlayer.GetIdentity().GetId();
-                string killerName = killerPlayer.GetIdentity().GetName();
-                
-                string payload = "{";
-                payload += "\"killerSteamId\":\"" + killerSteamId + "\",";
-                payload += "\"killerBohemiaId\":\"" + killerBohemiaId + "\",";
-                payload += "\"killerName\":\"" + killerName + "\",";
-                payload += "\"targetType\":\"zombie\",";
-                payload += "\"className\":\"" + this.GetType() + "\"";
-                payload += "}";
-                DayZLeaderboardAPI.SendPost("/event/kill-pve", payload);
+                killerPlayer.m_SessionZombieKills++;
             }
         }
     }
 }
 
-// Modded AnimalBase to track animal kills by players
+// Modded AnimalBase to track animal kills by players (accumulated in-memory)
 modded class AnimalBase
 {
     override void EEKilled(Object killer)
@@ -192,24 +189,16 @@ modded class AnimalBase
         if (!GetGame().IsServer())
             return;
 
+        if (DayZLeaderboardAPI.m_Config && !DayZLeaderboardAPI.m_Config.track_animals)
+            return;
+
         EntityAI killerEntity = EntityAI.Cast(killer);
         if (killerEntity)
         {
             PlayerBase killerPlayer = PlayerBase.Cast(killerEntity.GetHierarchyRootPlayer());
             if (killerPlayer && killerPlayer.GetIdentity())
             {
-                string killerSteamId = killerPlayer.GetIdentity().GetPlainId();
-                string killerBohemiaId = killerPlayer.GetIdentity().GetId();
-                string killerName = killerPlayer.GetIdentity().GetName();
-                
-                string payload = "{";
-                payload += "\"killerSteamId\":\"" + killerSteamId + "\",";
-                payload += "\"killerBohemiaId\":\"" + killerBohemiaId + "\",";
-                payload += "\"killerName\":\"" + killerName + "\",";
-                payload += "\"targetType\":\"animal\",";
-                payload += "\"className\":\"" + this.GetType() + "\"";
-                payload += "}";
-                DayZLeaderboardAPI.SendPost("/event/kill-pve", payload);
+                killerPlayer.m_SessionAnimalKills++;
             }
         }
     }

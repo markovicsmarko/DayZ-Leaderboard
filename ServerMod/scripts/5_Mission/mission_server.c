@@ -100,6 +100,11 @@ modded class MissionServer
             bankBalance = DayZLeaderboardIntegrations.GetPlayerBankBalance(player);
         }
 
+        int zombieKills = player.m_SessionZombieKills;
+        int animalKills = player.m_SessionAnimalKills;
+        player.m_SessionZombieKills = 0;
+        player.m_SessionAnimalKills = 0;
+
         vector pos = player.GetPosition();
         string posStr = pos[0].ToString() + " " + pos[1].ToString() + " " + pos[2].ToString();
 
@@ -109,6 +114,8 @@ modded class MissionServer
         payload += "\"playerName\":\"" + identity.GetName() + "\",";
         payload += "\"addedPlayTime\":" + sessionPlayTimeSeconds.ToString() + ",";
         payload += "\"bankBalance\":" + bankBalance.ToString() + ",";
+        payload += "\"addedZombieKills\":" + zombieKills.ToString() + ",";
+        payload += "\"addedAnimalKills\":" + animalKills.ToString() + ",";
         payload += "\"position\":\"" + posStr + "\"";
         payload += "}";
 

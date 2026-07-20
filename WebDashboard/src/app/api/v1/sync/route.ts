@@ -29,7 +29,7 @@ export async function POST(request: Request) {
 
     // 2. Parse Payload
     const body = await request.json();
-    const { steamId, bohemiaId, playerName, addedPlayTime, bankBalance, position } = body;
+    const { steamId, bohemiaId, playerName, addedPlayTime, bankBalance, position, addedZombieKills, addedAnimalKills } = body;
 
     if (!steamId || !bohemiaId || !playerName) {
       return NextResponse.json({ error: 'Missing required sync fields.' }, { status: 400 });
@@ -75,6 +75,29 @@ export async function POST(request: Request) {
       update: updateData,
       create: createData,
     });
+
+    // Process batched PvE kills efficiently
+    if (settings.features.zombie.enabled && addedZombieKills && addedZombieKills > 0) {
+      const zombieRecords = Array.from({ length: Math.min(addedZombieKills, 100) }).map(() => ({
+        killerId: steamId,
+        killerBohemiaId: bohemiaId,
+        killerName: playerName,
+        targetType: 'zombie',
+        className: 'ZombieBase'
+      }));
+      await prisma.pveKill.createMany({ data: zombieRecords });
+    }
+
+    if (settings.features.zombie.enabled && addedAnimalKills && addedAnimalKills > 0) {
+      const animalRecords = Array.from({ length: Math.min(addedAnimalKills, 50) }).map(() => ({
+        killerId: steamId,
+        killerBohemiaId: bohemiaId,
+        killerName: playerName,
+        targetType: 'animal',
+        className: 'AnimalBase'
+      }));
+      await prisma.pveKill.createMany({ data: animalRecords });
+    }
 
     return NextResponse.json({ success: true, player });
 

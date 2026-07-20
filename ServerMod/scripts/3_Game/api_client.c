@@ -1,11 +1,14 @@
 class DayZLeaderboardConfig
 {
-    string api_url;
-    string api_key;
-    bool track_dna;
-    bool track_expansion_ai;
-    bool track_expansion_bank;
-    int sync_interval_minutes;
+    string api_url = "http://localhost:3000/api/v1";
+    string api_key = "CHANGE_ME";
+    bool track_dna = true;
+    bool track_expansion_ai = true;
+    bool track_expansion_bank = true;
+    bool track_zombies = true;
+    bool track_animals = true;
+    bool track_hits = true;
+    int sync_interval_minutes = 5;
 
     void Load()
     {
@@ -17,15 +20,10 @@ class DayZLeaderboardConfig
         if (FileExist(path))
         {
             JsonFileLoader<DayZLeaderboardConfig>.JsonLoadFile(path, this);
+            Save(); // Automatically upgrades existing config.json with newly added settings
         }
         else
         {
-            api_url = "http://localhost:3000/api/v1";
-            api_key = "CHANGE_ME";
-            track_dna = true;
-            track_expansion_ai = true;
-            track_expansion_bank = true;
-            sync_interval_minutes = 5;
             Save();
         }
     }
